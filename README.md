@@ -20,11 +20,26 @@
 - 分类模型的输出自动打印 top-5；其它形状打印统计量和前几个值
 - 支持单图、整个目录批量
 
-## 环境
+## 环境与依赖
+
+**板子上（跑推理）** —— 这些 JetPack 镜像里都有，一般不用装：
 
 - 设备：Jetson TX2（其它 Jetson 除依赖路径外代码通用）
 - 系统：JetPack 4.6.x / L4T R32.x
 - 组件：CUDA 10.2、TensorRT 8.2、OpenCV 4.x、g++ 7.5、CMake 3.10+
+
+自检一条命令：
+
+```bash
+head -1 /etc/nv_tegra_release && nvcc --version | grep release && \
+ls /usr/include/aarch64-linux-gnu/NvInfer.h && pkg-config --modversion opencv4
+```
+
+**PC 上（导出模型）** —— Python 依赖见 `requirements.txt`：
+
+```bash
+pip install -r requirements.txt
+```
 
 更高版本的 JetPack 也能用，只是文中标注的 API 差异要反过来看（见文档「报错对照」）。
 
@@ -58,7 +73,7 @@ cd ~/trt-demo/cpp
 ```bash
 # PC 上
 cd python
-pip install torch torchvision onnx onnxruntime numpy
+pip install -r requirements.txt
 python export_onnx.py --out resnet18.onnx
 python check_onnx.py --model resnet18.onnx
 

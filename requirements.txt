@@ -1,0 +1,12 @@
+# Python 侧依赖（转换与自检用，跑在 PC 上，不需要装到板子上）
+#
+# 安装：pip install -r requirements.txt
+# 说明：板子上只跑 C++ 推理，不需要这些包；它们只用于导出 ONNX 和校验算子兼容性
+
+torch>=2.0
+torchvision>=0.15
+
+# ONNX 导出与检查
+onnx>=1.14
+onnxruntime>=1.15
+numpy>=1.24
