@@ -41,6 +41,38 @@ ls /usr/include/aarch64-linux-gnu/NvInfer.h && pkg-config --modversion opencv4
 pip install -r requirements.txt
 ```
 
+**C++ 侧（编译推理程序）** —— 不需要包管理器，依赖由 `cpp/CMakeLists.txt` 自动查找：
+
+| 依赖 | 用途 | 头文件 / 库 | JetPack 里叫什么 |
+|---|---|---|---|
+| TensorRT | 加载 engine、执行推理 | `NvInfer.h` / `libnvinfer.so` | `tensorrt` |
+| CUDA Runtime | 显存分配、异步执行、计时 | `cuda_runtime.h` / `libcudart.so` | `cuda` |
+| OpenCV | 读图、resize、色彩转换 | `opencv2/opencv.hpp` / `libopencv_*.so` | `opencv` |
+
+这三个在 JetPack 里都是**预装**的，重新刷机后仍然存在，正常不用装。万一被删了：
+
+```bash
+sudo apt-get install -y libopencv-dev
+# TensorRT / CUDA 一般随 JetPack 提供，不建议用 apt 单独装，版本容易错
+```
+
+编译时 CMake 会打印找到的路径，出现下面四行就说明依赖齐了：
+
+```
+-- Found OpenCV: /usr (found version "4.1.1")
+-- NvInfer.h: /usr/include/aarch64-linux-gnu
+-- nvinfer: /usr/lib/aarch64-linux-gnu/libnvinfer.so
+-- cudart : /usr/local/cuda-10.2/lib64/libcudart.so
+```
+
+如果 `NvInfer.h` 那行报 `FATAL_ERROR`，手动指定：
+
+```bash
+cmake .. -DNVINFER_INCLUDE_DIR=/usr/include/aarch64-linux-gnu
+```
+
+`nvonnxparser` 只在「用 C++ 直接从 ONNX 建引擎」时才需要；本仓库统一用 `trtexec` 建引擎，所以代码里不依赖它。
+
 更高版本的 JetPack 也能用，只是文中标注的 API 差异要反过来看（见文档「报错对照」）。
 
 ## 三步跑起来
