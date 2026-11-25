@@ -1,0 +1,24 @@
+# 构建产物
+build/
+*.o
+*.so
+
+# 模型与引擎（体积大，且在目标设备上构建）
+*.onnx
+*.engine
+*.plan
+
+# Python 缓存
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# 系统
+.DS_Store
+Thumbs.db
