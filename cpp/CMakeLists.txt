@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(trt_demo LANGUAGES CXX)
+project(trt_infer LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -35,18 +35,18 @@ message(STATUS "nvinfer: ${NVINFER_LIB}")
 message(STATUS "cudart : ${CUDART_LIB}")
 
 # ---- 目标 ----
-add_executable(trt_demo
+add_executable(trt_infer
   src/main.cpp
   src/trt_engine.cpp
 )
 
-target_include_directories(trt_demo PRIVATE
+target_include_directories(trt_infer PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/include
   ${NVINFER_INCLUDE_DIR}
   ${OpenCV_INCLUDE_DIRS}
 )
 
-target_link_libraries(trt_demo PRIVATE
+target_link_libraries(trt_infer PRIVATE
   ${NVINFER_LIB}
   ${CUDART_LIB}
   ${OpenCV_LIBS}
